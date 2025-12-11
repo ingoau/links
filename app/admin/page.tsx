@@ -6,8 +6,12 @@ export default async function AdminPage() {
 
   if (session) {
     return (
-      <div>
-        <h1>Admin Page</h1>
+      <div className="p-2">
+        <div className="w-full max-w-xl mx-auto">
+          <div className="w-full p-2 border-b">
+            <h1 className="text-xl">links</h1>
+          </div>
+        </div>
       </div>
     );
   } else {
