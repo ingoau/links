@@ -9,8 +9,8 @@ export default function CreateLink() {
     <div className="border p-2 flex flex-col gap-2">
       <div>create</div>
       <div className="flex flex-row gap-2">
-        <Input />
-        <Input />
+        <Input placeholder="link" />
+        <Input placeholder="path" />
         <Button variant="outline">
           Create<Kbd>⏎</Kbd>
         </Button>
