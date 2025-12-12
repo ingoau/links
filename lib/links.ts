@@ -1,5 +1,10 @@
 "use server";
 
+import { redis } from "./redis";
+
 export async function create(link: string, path: string) {
-  await new Promise((resolve) => setTimeout(resolve, 1000));
+  await redis.set(
+    `link:${path}`,
+    JSON.stringify({ link, createdAt: Date.now() }),
+  );
 }
