@@ -10,10 +10,8 @@ import { Link } from "@/lib/types";
 
 export default function CreateLink({
   refetchAction,
-  setLinksAction,
 }: {
   refetchAction: () => Promise<void>;
-  setLinksAction: React.Dispatch<React.SetStateAction<Link[]>>;
 }) {
   const [pending, setPending] = useState(false);
 
@@ -33,14 +31,6 @@ export default function CreateLink({
                 formData.get("link")?.toString() || "",
                 formData.get("path")?.toString() || "",
               );
-              setLinksAction((prevLinks) => [
-                {
-                  link: formData.get("link")?.toString() || "",
-                  path: formData.get("path")?.toString() || "",
-                  createdAt: new Date().getTime(),
-                },
-                ...prevLinks,
-              ]);
               refetchAction();
               (event.target as HTMLFormElement).reset();
             } finally {
