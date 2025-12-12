@@ -20,6 +20,7 @@ export default function CreateLink({
       <form
         className="flex flex-row gap-2"
         onSubmit={async (event: React.FormEvent<HTMLFormElement>) => {
+          event.preventDefault();
           const formData = new FormData(event.currentTarget);
 
           setPending(true);
@@ -32,6 +33,8 @@ export default function CreateLink({
           } finally {
             setPending(false);
           }
+
+          event.currentTarget.reset();
         }}
       >
         <Input
