@@ -15,7 +15,7 @@ export default function CreateLink({
   const [pending, setPending] = useState(false);
 
   return (
-    <div className="border p-2 flex flex-col gap-2">
+    <div className="border p-2 flex flex-col gap-2 col-span-2">
       <div>create</div>
       <form
         className="flex flex-row gap-2"
