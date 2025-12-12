@@ -32,7 +32,7 @@ export default async function AdminPage() {
               <DropdownMenuTrigger>
                 <Avatar className="rounded-none! border">
                   <AvatarImage src={session.user?.image || ""} />
-                  <AvatarFallback>
+                  <AvatarFallback className="rounded-none!">
                     {session.user?.name?.charAt(0)}
                   </AvatarFallback>
                 </Avatar>
