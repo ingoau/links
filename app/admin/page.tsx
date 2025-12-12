@@ -1,6 +1,14 @@
 import { auth, signOut } from "@/auth";
 import CreateLink from "@/components/create-link";
 import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import Image from "next/image";
 import { redirect } from "next/navigation";
 
@@ -14,27 +22,33 @@ export default async function AdminPage() {
           <div className="flex flex-row gap-2">
             <Button size="sm">links</Button>
             <div className="grow"></div>
-            <Button size="sm" variant="ghost"></Button>
-            <Image
-              src={session.user?.image || ""}
-              alt={session.user?.name || ""}
-              width={32}
-              height={32}
-              className="border"
-            />
-            {/*<Button size="sm" variant="outline">
-              {session.user?.name}
-            </Button>
-            <form
-              action={async () => {
-                "use server";
-                await signOut({ redirect: true, redirectTo: "/" });
-              }}
-            >
-              <Button variant="outline" size="sm" type="submit">
-                logout
-              </Button>
-            </form>*/}
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <Image
+                  src={session.user?.image || ""}
+                  alt={session.user?.name || ""}
+                  width={32}
+                  height={32}
+                  className="border"
+                />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuLabel>{session.user?.name}</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <form
+                  action={async () => {
+                    "use server";
+                    await signOut({ redirect: true, redirectTo: "/" });
+                  }}
+                >
+                  <DropdownMenuItem asChild>
+                    <button type="submit" className="w-full">
+                      logout
+                    </button>
+                  </DropdownMenuItem>
+                </form>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
           <CreateLink />
         </div>
