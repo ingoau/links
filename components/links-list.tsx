@@ -26,7 +26,7 @@ export default function LinksList() {
 
   return (
     <>
-      <CreateLink refetchAction={refetch} />
+      <CreateLink refetchAction={refetch} setLinksAction={setLinks} />
       {links.map((link) => (
         <LinkComponent key={link.path} link={link} />
       ))}
