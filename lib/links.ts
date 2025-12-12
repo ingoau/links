@@ -13,7 +13,7 @@ export async function create(link: string, path: string) {
 
 export async function list() {
   const keys = await redis.keys("link:*");
-  return Promise.all(
+  const links = await Promise.all(
     keys.map(async (key) => {
       const value = await redis.get(key);
       return {
@@ -22,4 +22,5 @@ export async function list() {
       };
     }),
   );
+  return links.sort((a, b) => a.createdAt - b.createdAt);
 }
