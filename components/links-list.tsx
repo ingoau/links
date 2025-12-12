@@ -4,6 +4,7 @@ import { Link } from "@/lib/types";
 import CreateLink from "./create-link";
 import { useEffect, useState } from "react";
 import * as linksApi from "@/lib/links";
+import LinkComponent from "./link";
 
 export default function LinksList() {
   const [links, setLinks] = useState<Link[]>([]);
@@ -25,14 +26,9 @@ export default function LinksList() {
   return (
     <>
       <CreateLink refetchAction={refetch} />
-      <ul>
-        {links.map((link) => (
-          <li key={link.path}>
-            {link.link}
-            {link.path}
-          </li>
-        ))}
-      </ul>
+      {links.map((link) => (
+        <LinkComponent key={link.path} link={link} />
+      ))}
     </>
   );
 }
