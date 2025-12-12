@@ -10,6 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Image from "next/image";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 
 export default async function AdminPage() {
@@ -20,7 +21,11 @@ export default async function AdminPage() {
       <div className="p-2">
         <div className="w-full max-w-xl mx-auto flex flex-col gap-2">
           <div className="flex flex-row gap-2">
-            <Button size="sm">links</Button>
+            <Button size="sm" asChild>
+              <Link href="https://github.com/inglan/links/" target="_blank">
+                links
+              </Link>
+            </Button>
             <div className="grow"></div>
             <DropdownMenu>
               <DropdownMenuTrigger>
