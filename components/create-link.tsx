@@ -31,11 +31,10 @@ export default function CreateLink({
                 formData.get("path")?.toString() || "",
               );
               refetchAction();
+              (event.target as HTMLFormElement).reset();
             } finally {
               setPending(false);
             }
-
-            event.currentTarget.reset();
           }}
         >
           <Input
