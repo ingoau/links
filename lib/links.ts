@@ -1,8 +1,11 @@
 "use server";
 
+import { auth } from "@/auth";
 import { redis } from "./redis";
 
 export async function create(link: string, path: string) {
+  const session = await auth();
+  if (!session) throw new Error("Unauthorized");
   const existing = await redis.get(`link:${path}`);
   if (existing) throw new Error("Link already exists");
   await redis.set(
@@ -12,6 +15,8 @@ export async function create(link: string, path: string) {
 }
 
 export async function list() {
+  const session = await auth();
+  if (!session) throw new Error("Unauthorized");
   const keys = await redis.keys("link:*");
   const links = await Promise.all(
     keys.map(async (key) => {
