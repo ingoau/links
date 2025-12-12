@@ -63,17 +63,11 @@ export default async function AdminPage() {
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
-          <Suspense fallback={<div>Loading...</div>}>
-            <LinksListContainer />
-          </Suspense>
+          <LinksList />
         </div>
       </div>
     );
   } else {
     redirect("/admin/login");
   }
-}
-
-async function LinksListContainer() {
-  return <LinksList links={await links.list()} />;
 }
