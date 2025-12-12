@@ -16,7 +16,10 @@ export async function list() {
   return Promise.all(
     keys.map(async (key) => {
       const value = await redis.get(key);
-      return JSON.parse(value || "") as { link: string; createdAt: number };
+      return {
+        path: key.replace("link:", ""),
+        ...(JSON.parse(value || "") as { link: string; createdAt: number }),
+      };
     }),
   );
 }
