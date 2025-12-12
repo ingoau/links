@@ -40,7 +40,7 @@ function FormFields() {
       />
       <Input disabled={pending} placeholder="path" name="path" />
       <Button variant="outline" disabled={pending}>
-        Create<Kbd>⏎</Kbd>
+        create<Kbd>⏎</Kbd>
       </Button>
     </>
   );
