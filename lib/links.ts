@@ -10,3 +10,13 @@ export async function create(link: string, path: string) {
     JSON.stringify({ link, createdAt: Date.now() }),
   );
 }
+
+export async function list() {
+  const keys = await redis.keys("link:*");
+  return Promise.all(
+    keys.map(async (key) => {
+      const value = await redis.get(key);
+      return JSON.parse(value || "") as { link: string; createdAt: number };
+    }),
+  );
+}
