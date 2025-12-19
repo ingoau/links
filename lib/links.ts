@@ -5,25 +5,32 @@ import { redis } from "./redis";
 
 const linkPattern = /^[A-Za-z0-9]+$/;
 
-export async function create(link: string, path: string) {
+export async function create(
+  link: string,
+  path: string,
+): Promise<{ success: boolean; error?: string }> {
   const session = await auth();
-  if (!session) throw new Error("unauthorized");
+  if (!session) return { success: false, error: "unauthorized" };
   if (path == "") {
     path = Math.random().toString(36).substring(2, 8);
   }
-  if (!linkPattern.test(path)) throw new Error("invalid path");
+  if (!linkPattern.test(path)) return { success: false, error: "invalid path" };
 
   const existing = await redis.get(`link:${path}`);
-  if (existing) throw new Error("path already exists");
+  if (existing) return { success: false, error: "path already exists" };
   await redis.set(
     `link:${path}`,
     JSON.stringify({ link, createdAt: Date.now() }),
   );
+  return { success: true };
 }
 
-export async function list() {
+export async function list(): Promise<
+  | { success: true; data: { path: string; link: string; createdAt: number }[] }
+  | { success: false; error: string }
+> {
   const session = await auth();
-  if (!session) throw new Error("unauthorized");
+  if (!session) return { success: false, error: "unauthorized" };
   const keys = await redis.keys("link:*");
   const links = await Promise.all(
     keys.map(async (key) => {
@@ -34,27 +41,38 @@ export async function list() {
       };
     }),
   );
-  return links.sort((a, b) => a.createdAt - b.createdAt).reverse();
+  return {
+    success: true,
+    data: links.sort((a, b) => a.createdAt - b.createdAt).reverse(),
+  };
 }
 
-export async function deleteLink(path: string) {
+export async function deleteLink(
+  path: string,
+): Promise<{ success: boolean; error?: string }> {
   const session = await auth();
-  if (!session) throw new Error("unauthorized");
+  if (!session) return { success: false, error: "unauthorized" };
   const existing = await redis.get(`link:${path}`);
-  if (!existing) throw new Error("link does not exist");
+  if (!existing) return { success: false, error: "link does not exist" };
   await redis.del(`link:${path}`);
+  return { success: true };
 }
 
-export async function update(currentPath: string, path: string, link: string) {
+export async function update(
+  currentPath: string,
+  path: string,
+  link: string,
+): Promise<{ success: boolean; error?: string }> {
   const session = await auth();
-  if (!session) throw new Error("unauthorized");
+  if (!session) return { success: false, error: "unauthorized" };
   const existing = await redis.get(`link:${currentPath}`);
-  if (!existing) throw new Error("link does not exist");
+  if (!existing) return { success: false, error: "link does not exist" };
   await redis.del(`link:${currentPath}`);
   const newExisting = await redis.get(`link:${path}`);
-  if (newExisting) throw new Error("path already exists");
+  if (newExisting) return { success: false, error: "path already exists" };
   await redis.set(
     `link:${path}`,
     JSON.stringify({ link, createdAt: JSON.parse(existing).createdAt }),
   );
+  return { success: true };
 }

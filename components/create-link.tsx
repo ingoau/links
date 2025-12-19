@@ -25,19 +25,19 @@ export default function CreateLink({
             const formData = new FormData(event.currentTarget);
 
             setPending(true);
-            try {
-              await links.create(
-                formData.get("link")?.toString() || "",
-                formData.get("path")?.toString() || "",
-              );
+            const result = await links.create(
+              formData.get("link")?.toString() || "",
+              formData.get("path")?.toString() || "",
+            );
+
+            if (result.success) {
               await refetchAction();
               (event.target as HTMLFormElement).reset();
               toast.success("link created");
-            } catch (error) {
-              toast.error((error as Error)?.message || "failed to create link");
-            } finally {
-              setPending(false);
+            } else {
+              toast.error(result.error || "failed to create link");
             }
+            setPending(false);
           }}
         >
           <Input

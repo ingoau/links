@@ -13,7 +13,10 @@ export default function LinksList() {
 
   useEffect(() => {
     async function fetchLinks() {
-      setLinks(await linksApi.list());
+      const result = await linksApi.list();
+      if (result.success) {
+        setLinks(result.data);
+      }
       setLoading(false);
     }
 
@@ -21,7 +24,10 @@ export default function LinksList() {
   }, []);
 
   async function refetch() {
-    setLinks(await linksApi.list());
+    const result = await linksApi.list();
+    if (result.success) {
+      setLinks(result.data);
+    }
   }
 
   return (

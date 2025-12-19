@@ -84,12 +84,13 @@ export default function LinkComponent({
                 autoFocus
                 onClick={async () => {
                   toast.promise(
-                    new Promise((resolve, reject) => {
-                      links
-                        .deleteLink(link.path)
-                        .then(() => refetchAction().then(resolve).catch(reject))
-                        .catch(reject);
-                    }),
+                    (async () => {
+                      const result = await links.deleteLink(link.path);
+                      if (!result.success) {
+                        throw new Error(result.error || "failed to delete");
+                      }
+                      await refetchAction();
+                    })(),
                     {
                       loading: "deleting...",
                       success: "deleted",
@@ -129,16 +130,21 @@ export default function LinkComponent({
                   setEditDialogOpen(false);
 
                   toast.promise(
-                    new Promise((resolve, reject) => {
-                      links
-                        .update(link.path, enteredPath, enteredLink)
-                        .then(() => refetchAction().then(resolve).catch(reject))
-                        .catch(reject);
-                    }),
+                    (async () => {
+                      const result = await links.update(
+                        link.path,
+                        enteredPath,
+                        enteredLink,
+                      );
+                      if (!result.success) {
+                        throw new Error(result.error || "failed to update");
+                      }
+                      await refetchAction();
+                    })(),
                     {
                       loading: "updating...",
                       success: "link updated",
-                      error: (error) => error,
+                      error: (error) => error.message,
                     },
                   );
                 }}
