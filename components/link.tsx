@@ -32,10 +32,15 @@ export default function LinkComponent({
         <button
           className="hover:underline wrap-anywhere text-left"
           onClick={() =>
-            toast.promise(navigator.clipboard.writeText(link.path), {
-              success: "copied",
-              error: "error copying",
-            })
+            toast.promise(
+              navigator.clipboard.writeText(
+                `${location.protocol}//${location.host}/${link.path}`,
+              ),
+              {
+                success: "copied",
+                error: "error copying",
+              },
+            )
           }
         >
           <h2 className="text-lg">/{link.path}</h2>
