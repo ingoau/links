@@ -7,6 +7,7 @@ import { Kbd } from "./ui/kbd";
 import * as links from "@/lib/links";
 import { useState } from "react";
 import { Link } from "@/lib/types";
+import { toast } from "sonner";
 
 export default function CreateLink({
   refetchAction,
@@ -33,6 +34,9 @@ export default function CreateLink({
               );
               await refetchAction();
               (event.target as HTMLFormElement).reset();
+              toast.success("link created");
+            } catch (error) {
+              toast.error((error as Error)?.message || "failed to create link");
             } finally {
               setPending(false);
             }
