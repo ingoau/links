@@ -6,7 +6,7 @@ export default function LoggedOutPage() {
     <div className="w-full h-screen flex flex-col justify-center items-center gap-2">
       <p className="text-xl">logged out</p>
       <Button variant="ghost" asChild>
-        <Link href="/admin">sign in</Link>
+        <Link href="/admin">log in</Link>
       </Button>
     </div>
   );
