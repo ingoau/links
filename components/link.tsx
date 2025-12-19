@@ -18,7 +18,13 @@ import {
 import * as links from "@/lib/links";
 import { toast } from "sonner";
 
-export default function LinkComponent({ link }: { link: LinkType }) {
+export default function LinkComponent({
+  link,
+  refetchAction,
+}: {
+  link: LinkType;
+  refetchAction: () => Promise<void>;
+}) {
   return (
     <div className="border flex flex-row p-2 items-center gap-2">
       <div className="flex flex-col grow h-full">
@@ -58,6 +64,7 @@ export default function LinkComponent({ link }: { link: LinkType }) {
                     loading: "deleting...",
                     success: "deleted",
                     error: (error) => error.message,
+                    finally: () => refetchAction(),
                   });
                 }}
               >
