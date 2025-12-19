@@ -7,7 +7,7 @@ export async function create(link: string, path: string) {
   const session = await auth();
   if (!session) throw new Error("unauthorized");
   const existing = await redis.get(`link:${path}`);
-  if (existing) throw new Error("link already exists");
+  if (existing) throw new Error("path already exists");
   await redis.set(
     `link:${path}`,
     JSON.stringify({ link, createdAt: Date.now() }),
