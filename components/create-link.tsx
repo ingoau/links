@@ -1,12 +1,10 @@
 "use client";
 
-import { useFormStatus } from "react-dom";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Kbd } from "./ui/kbd";
 import * as links from "@/lib/links";
 import { useState } from "react";
-import { Link } from "@/lib/types";
 import { toast } from "sonner";
 
 export default function CreateLink({

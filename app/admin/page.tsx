@@ -1,5 +1,4 @@
 import { auth, signOut } from "@/auth";
-import CreateLink from "@/components/create-link";
 import LinksList from "@/components/links-list";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -11,11 +10,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import * as links from "@/lib/links";
-import { Suspense } from "react";
 
 export default async function AdminPage() {
   const session = await auth();
