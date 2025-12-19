@@ -36,3 +36,11 @@ export async function list() {
   );
   return links.sort((a, b) => a.createdAt - b.createdAt).reverse();
 }
+
+export async function deleteLink(path: string) {
+  const session = await auth();
+  if (!session) throw new Error("unauthorized");
+  const existing = await redis.get(`link:${path}`);
+  if (!existing) throw new Error("link does not exist");
+  await redis.del(`link:${path}`);
+}
