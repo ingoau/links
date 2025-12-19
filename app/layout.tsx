@@ -28,7 +28,10 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           {children}
-          <Toaster position="top-right" />
+          <Toaster
+            position="top-right"
+            offset={{ top: "0.5rem", right: "0.5rem" }}
+          />
         </ThemeProvider>
       </body>
     </html>
