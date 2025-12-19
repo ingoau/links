@@ -16,6 +16,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import * as links from "@/lib/links";
+import { toast } from "sonner";
 
 export default function LinkComponent({ link }: { link: LinkType }) {
   return (
@@ -52,8 +53,12 @@ export default function LinkComponent({ link }: { link: LinkType }) {
             <AlertDialogFooter>
               <AlertDialogCancel>cancel</AlertDialogCancel>
               <AlertDialogAction
-                onClick={() => {
-                  links.deleteLink(link.path);
+                onClick={async () => {
+                  toast.promise(links.deleteLink(link.path), {
+                    loading: "deleting...",
+                    success: "deleted",
+                    error: (error) => error.message,
+                  });
                 }}
               >
                 delete
