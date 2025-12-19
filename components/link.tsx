@@ -87,12 +87,19 @@ export default function LinkComponent({
               <AlertDialogAction
                 autoFocus
                 onClick={async () => {
-                  toast.promise(links.deleteLink(link.path), {
-                    loading: "deleting...",
-                    success: "deleted",
-                    error: (error) => error.message,
-                    finally: () => refetchAction(),
-                  });
+                  toast.promise(
+                    new Promise((resolve, reject) => {
+                      links
+                        .deleteLink(link.path)
+                        .then(() => refetchAction().then(resolve).catch(reject))
+                        .catch(reject);
+                    }),
+                    {
+                      loading: "deleting...",
+                      success: "deleted",
+                      error: (error) => error.message,
+                    },
+                  );
                 }}
               >
                 delete
@@ -126,12 +133,16 @@ export default function LinkComponent({
                   setEditDialogOpen(false);
 
                   toast.promise(
-                    links.update(link.path, enteredPath, enteredLink),
+                    new Promise((resolve, reject) => {
+                      links
+                        .update(link.path, enteredPath, enteredLink)
+                        .then(() => refetchAction().then(resolve).catch(reject))
+                        .catch(reject);
+                    }),
                     {
                       loading: "updating...",
                       success: "link updated",
                       error: (error) => error,
-                      finally: () => refetchAction(),
                     },
                   );
                 }}
