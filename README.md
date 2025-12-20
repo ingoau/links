@@ -25,4 +25,7 @@ written in next.js, uses auth.js to log in with github, which is by far the best
 ## demo
 if `DEMO_MODE=true` is set, authentication is disabled. DO NOT USE THIS IN PRODUCTION
 
-you can test this out with the demo docker compose stack, just run `docker-compose -f docker-compose.demo.yml up`
+you can test this out with the demo docker compose stack, just run
+```
+docker-compose -f docker-compose.demo.yml up
+```
