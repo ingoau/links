@@ -1,4 +1,7 @@
-## usage
+---
+title: usage
+description: deploy links
+---
 1. set up an oauth app with github. set the redirect url to `yourdomain.com/api/auth/callback/github`
 
 2. set the following env vars
