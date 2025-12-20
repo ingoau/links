@@ -3,12 +3,16 @@
 import { auth } from "@/auth";
 import { redis } from "./redis";
 
+const demoMode = process.env.DEMO_MODE === "true";
+
 export async function create(
   link: string,
   path: string,
 ): Promise<{ success: boolean; error?: string }> {
-  const session = await auth();
-  if (!session) return { success: false, error: "unauthorized" };
+  if (!demoMode) {
+    const session = await auth();
+    if (!session) return { success: false, error: "unauthorized" };
+  }
   if (path == "") {
     path = Math.random().toString(36).substring(2, 8);
   }
@@ -27,8 +31,10 @@ export async function list(): Promise<
   | { success: true; data: { path: string; link: string; createdAt: number }[] }
   | { success: false; error: string }
 > {
-  const session = await auth();
-  if (!session) return { success: false, error: "unauthorized" };
+  if (!demoMode) {
+    const session = await auth();
+    if (!session) return { success: false, error: "unauthorized" };
+  }
   const keys = await redis.keys("link:*");
   const links = await Promise.all(
     keys.map(async (key) => {
@@ -48,8 +54,10 @@ export async function list(): Promise<
 export async function deleteLink(
   path: string,
 ): Promise<{ success: boolean; error?: string }> {
-  const session = await auth();
-  if (!session) return { success: false, error: "unauthorized" };
+  if (!demoMode) {
+    const session = await auth();
+    if (!session) return { success: false, error: "unauthorized" };
+  }
   const existing = await redis.get(`link:${path}`);
   if (!existing) return { success: false, error: "link does not exist" };
   await redis.del(`link:${path}`);
@@ -61,8 +69,10 @@ export async function update(
   path: string,
   link: string,
 ): Promise<{ success: boolean; error?: string }> {
-  const session = await auth();
-  if (!session) return { success: false, error: "unauthorized" };
+  if (!demoMode) {
+    const session = await auth();
+    if (!session) return { success: false, error: "unauthorized" };
+  }
   const existing = await redis.get(`link:${currentPath}`);
   if (!existing) return { success: false, error: "link does not exist" };
   await redis.del(`link:${currentPath}`);
