@@ -16,7 +16,9 @@ import { redirect } from "next/navigation";
 export default async function AdminPage() {
   const session = await auth();
 
-  if (session) {
+  const demoMode = process.env.DEMO_MODE === "true";
+
+  if (session || demoMode) {
     return (
       <div className="p-2">
         <div className="w-full max-w-4xl mx-auto flex flex-col gap-2">
@@ -27,40 +29,48 @@ export default async function AdminPage() {
               </Link>
             </Button>
             <div className="grow"></div>
-            <DropdownMenu>
-              <DropdownMenuTrigger>
-                <Avatar className="rounded-none! border">
-                  <AvatarImage src={session.user?.image || ""} />
-                  <AvatarFallback className="rounded-none!">
-                    {session.user?.name?.charAt(0)}
-                  </AvatarFallback>
-                </Avatar>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuLabel>
-                  <div>{session.user?.name}</div>
-                  <div className="text-xs text-neutral-400">
-                    {session.user?.email}
-                  </div>
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <form
-                  action={async () => {
-                    "use server";
-                    await signOut({
-                      redirect: true,
-                      redirectTo: "/admin/logged-out",
-                    });
-                  }}
-                >
-                  <DropdownMenuItem asChild>
-                    <button type="submit" className="w-full">
-                      logout
-                    </button>
-                  </DropdownMenuItem>
-                </form>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            {demoMode ? (
+              <Button size="sm" variant="destructive">
+                Demo Mode
+              </Button>
+            ) : (
+              session && (
+                <DropdownMenu>
+                  <DropdownMenuTrigger>
+                    <Avatar className="rounded-none! border">
+                      <AvatarImage src={session.user?.image || ""} />
+                      <AvatarFallback className="rounded-none!">
+                        {session.user?.name?.charAt(0)}
+                      </AvatarFallback>
+                    </Avatar>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuLabel>
+                      <div>{session.user?.name}</div>
+                      <div className="text-xs text-neutral-400">
+                        {session.user?.email}
+                      </div>
+                    </DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <form
+                      action={async () => {
+                        "use server";
+                        await signOut({
+                          redirect: true,
+                          redirectTo: "/admin/logged-out",
+                        });
+                      }}
+                    >
+                      <DropdownMenuItem asChild>
+                        <button type="submit" className="w-full">
+                          logout
+                        </button>
+                      </DropdownMenuItem>
+                    </form>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              )
+            )}
           </div>
           <div className="grid md:grid-cols-2 gap-2">
             <LinksList />
